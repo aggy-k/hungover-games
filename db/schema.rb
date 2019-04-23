@@ -10,9 +10,78 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2019_04_23_100328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "attendee_statuses", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "game_statuses", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.bigint "timeslot_id"
+    t.date "date"
+    t.datetime "signup_time"
+    t.text "description"
+    t.text "announcement"
+    t.bigint "game_status_id"
+    t.string "location"
+    t.integer "max_capacity"
+    t.integer "attendees_count"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_status_id"], name: "index_games_on_game_status_id"
+    t.index ["timeslot_id"], name: "index_games_on_timeslot_id"
+    t.index ["user_id"], name: "index_games_on_user_id"
+  end
+
+  create_table "signups", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "game_id"
+    t.bigint "attendee_status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendee_status_id"], name: "index_signups_on_attendee_status_id"
+    t.index ["game_id"], name: "index_signups_on_game_id"
+    t.index ["user_id"], name: "index_signups_on_user_id"
+  end
+
+  create_table "timeslots", force: :cascade do |t|
+    t.string "day"
+    t.time "start_time"
+    t.time "end"
+    t.datetime "default_signup_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "wechat_id"
+    t.string "username"
+    t.string "profile_image"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "games", "game_statuses"
+  add_foreign_key "games", "timeslots"
+  add_foreign_key "games", "users"
+  add_foreign_key "signups", "attendee_statuses"
+  add_foreign_key "signups", "games"
+  add_foreign_key "signups", "users"
 end
