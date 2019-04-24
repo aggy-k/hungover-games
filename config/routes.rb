@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       end
       resources :timeslots, only: [:index, :show, :create, :update, :destroy]
       resources :signups, only: [:show, :create, :update, :destroy]
+      resources :game_statuses, only: [:index]
 
       post '/login', to: 'login#login'
     end
