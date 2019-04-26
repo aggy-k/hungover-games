@@ -1,18 +1,20 @@
 class Api::V1::SignupsController < Api::V1::BaseController
+  skip_before_action :verify_authenticity_token
   before_action :set_user
   before_action :set_game, only: [:create, :update]
   before_action :set_attendee_status, only: [:create, :update]
 
   def index
-    if @user.type == 'Admin'
-      @signups = Signup.all
-    else
-      @signups = @user.signups
-    end
+    # if @user.type == 'Admin'
+    #   @signups = Signup.all
+    # else
+    #   @signups = @user.signups
+    # end
+    @signups = @user.signups
   end
 
   def create
-    @signup = Signup.new(signup_params)
+    @signup = Signup.new()
     @signup.user = @user
     @signup.game = @game
     @signup.attendee_status = @attendee_status
@@ -50,6 +52,6 @@ class Api::V1::SignupsController < Api::V1::BaseController
   end
 
   def render_error
-    render :json { errors: @signup.errors.full_messages }, status: :unprocessable_entity
+    render json: { errors: @signup.errors.full_messages }, status: :unprocessable_entity
   end
 end
