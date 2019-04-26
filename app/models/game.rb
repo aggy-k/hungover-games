@@ -3,4 +3,7 @@ class Game < ApplicationRecord
   belongs_to :user
   has_many :signups
   has_many :users, through: :signups
+
+  validates :date, :signup_time, :start_time, :end_time, :max_capacity, :attendees_count, presence: true
+  validates :max_capacity, :attendees_count, numericality: { only_integer: true }
 end

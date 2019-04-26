@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 2019_04_26_033653) do
     t.text "announcement"
     t.bigint "game_status_id"
     t.string "location"
-    t.integer "max_capacity"
-    t.integer "attendees_count"
+    t.integer "max_capacity", default: 28
+    t.integer "attendees_count", default: 0
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
