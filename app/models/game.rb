@@ -1,6 +1,7 @@
 class Game < ApplicationRecord
   belongs_to :game_status
   belongs_to :user
+  belongs_to :timeslot
   has_many :signups
   has_many :users, through: :signups
 
