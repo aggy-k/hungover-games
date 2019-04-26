@@ -1,5 +1,5 @@
 if User.count == 0
-  User.create!(first_name: "Admin", last_name: "One", type: "Admin")
+  User.create!(first_name: "Admin", last_name: "One", admin: true)
 end
 puts "Created #{User.count} fake admin user"
 
@@ -46,8 +46,8 @@ if AttendeeStatus.count == 0
 end
 
 puts "Destroying existing signups and games..."
-Signup.destroy_all if Rails.environment.development?
-Game.destroy_all if Rails.environment.development?
+Signup.destroy_all if Rails.env.development?
+Game.destroy_all if Rails.env.development?
 
 puts "Creating fake games..."
 Game.create!(
