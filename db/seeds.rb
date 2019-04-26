@@ -1,7 +1,8 @@
 if User.count == 0
   User.create!(first_name: "Admin", last_name: "One", admin: true)
+  puts "Created #{User.count} fake admin user"
 end
-puts "Created #{User.count} fake admin user"
+
 
 if GameStatus.count == 0
   puts "Creating Game Statuses.."
@@ -58,7 +59,8 @@ Game.create!(
   location: "Cages, Jingan",
   max_capacity: 28,
   start_time: Time.parse("17:00"),
-  end_time: Time.parse("19:00")
+  end_time: Time.parse("19:00"),
+  timeslot: Timeslot.all.sample
   )
 Game.create!(
   user: User.first,
@@ -68,7 +70,8 @@ Game.create!(
   location: "Cages, Jingan",
   max_capacity: 24,
   start_time: Time.parse("17:30"),
-  end_time: Time.parse("19:30")
+  end_time: Time.parse("19:30"),
+  timeslot: Timeslot.all.sample
   )
 Game.create!(
   user: User.first,
@@ -78,7 +81,8 @@ Game.create!(
   location: "Cages, Jingan",
   max_capacity: 28,
   start_time: Time.parse("15:00"),
-  end_time: Time.parse("17:00")
+  end_time: Time.parse("17:00"),
+  timeslot: Timeslot.all.sample
   )
 puts "Created #{Game.count} fake games."
 
