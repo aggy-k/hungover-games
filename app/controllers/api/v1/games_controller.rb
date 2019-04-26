@@ -13,7 +13,7 @@ class Api::V1::GamesController < Api::V1::BaseController
   def create
     @game = Game.new(game_params)
     @game.user = User.find(params[:user_id])
-    @game.timeslot = Timeslot.find(1)
+    # @game.timeslot = Timeslot.find(1)
     @game.game_status = GameStatus.find_by(is_active: params[:is_active]) # status: active
     @game.start_time = Time.parse(params[:start_time])
     @game.end_time = Time.parse(params[:end_time])
