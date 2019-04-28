@@ -16,8 +16,15 @@ class Api::V1::LoginController < Api::V1::BaseController
     @wechat_user ||= JSON.parse(@wechat_response.body)
   end
 
+  # def login
+  #   @user = User.find_or_create_by(wechat_id: wechat_user.fetch("openid"))
+  #   render json: {
+  #     userId: @user.id
+  #   }
+  # end
+
   def login
-    @user = User.find_or_create_by(wechat_id: wechat_user.fetch("openid"))
+    @user = User.find_or_create_by(wechat_id: params[:code])
     render json: {
       userId: @user.id
     }
