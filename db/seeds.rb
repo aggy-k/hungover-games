@@ -31,6 +31,9 @@ if Timeslot.count == 0
     end_time: Time.parse("10:00 PM"),
     default_signup_time: Time.parse("2019-04-22 12:00 PM")
     )
+  # Timeslot.create!(
+  #   day: 'Other'
+  #   )
   puts "Created #{Timeslot.count} timeslots."
 end
 

@@ -13,8 +13,8 @@ json.endTime @game.end_time.in_time_zone("Beijing").strftime("%H:%M")
 json.signUpDate @game.signup_time.in_time_zone("Beijing").strftime("%Y-%m-%d")
 json.signUpTime @game.signup_time.in_time_zone("Beijing").strftime("%H:%M")
 json.gameStatus @game.game_status.is_active
-json.timeslot @game.timeslot
-json.timeslotString "#{@game.timeslot.day} #{@game.timeslot.start_time.in_time_zone("Beijing").strftime('%l:%M %p')} - #{@game.timeslot.end_time.in_time_zone("Beijing").strftime('%l:%M %p')}"
+# json.timeslot @game.timeslot
+# json.timeslotString "#{@game.timeslot.day} #{@game.timeslot.start_time.in_time_zone("Beijing").strftime('%l:%M %p')} - #{@game.timeslot.end_time.in_time_zone("Beijing").strftime('%l:%M %p')}"
 
 json.attendees @game.signups do |signup|
   json.username signup.user.username

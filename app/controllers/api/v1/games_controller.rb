@@ -15,7 +15,7 @@ class Api::V1::GamesController < Api::V1::BaseController
     @game.user = User.find(params[:user_id])
 
     # convert is_active to BOOLEAN
-    @is_active = params[:is_active] == "true"
+    @is_active = params[:is_active] == "true" || params[:is_active] == true
     @game.game_status = GameStatus.find_by(is_active: @is_active)
 
     # convert all time related fields to date or datetime datatype
@@ -33,7 +33,7 @@ class Api::V1::GamesController < Api::V1::BaseController
 
   def update
     # convert is_active to BOOLEAN
-    @is_active = params[:is_active] == "true"
+    @is_active = params[:is_active] == "true" || params[:is_active] == true
     @game.game_status = GameStatus.find_by(is_active: @is_active)
 
     @game.start_time = Time.parse(params[:start_time])
@@ -64,7 +64,7 @@ class Api::V1::GamesController < Api::V1::BaseController
   end
 
   def game_params
-    params.require(:game).permit(:timeslot_id, :date, :signup_time, :description, :announcement, :game_status_id, :location, :max_capacity, :attendees_count, :user_id, :is_active, :end_time, :start_time)
+    params.require(:game).permit(:date, :signup_time, :description, :announcement, :location, :max_capacity, :user_id, :is_active, :end_time, :start_time)
   end
 
   def render_error
