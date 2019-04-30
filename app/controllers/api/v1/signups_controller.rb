@@ -5,7 +5,8 @@ class Api::V1::SignupsController < Api::V1::BaseController
   before_action :set_attendee_status, only: [:create, :update]
 
   def index
-    @signups = @user.signups
+    user_id = params[:user_id]
+    @signups = Signup.joins("INNER JOIN games ON games.id = signups.game_id").where("signups.user_id = ?", user_id).order("games.start_time DESC")
   end
 
   def create
