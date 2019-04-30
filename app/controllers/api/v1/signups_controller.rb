@@ -5,11 +5,6 @@ class Api::V1::SignupsController < Api::V1::BaseController
   before_action :set_attendee_status, only: [:create, :update]
 
   def index
-    # if @user.type == 'Admin'
-    #   @signups = Signup.all
-    # else
-    #   @signups = @user.signups
-    # end
     @signups = @user.signups
   end
 
@@ -28,7 +23,9 @@ class Api::V1::SignupsController < Api::V1::BaseController
 
   def update
     @signup = Signup.find(params[:id])
-    unless @signup.update(signup_params)
+    @signup.attendee_status = @attendee_status
+
+    unless @signup.save
       render_error
     end
   end

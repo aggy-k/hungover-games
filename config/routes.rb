@@ -4,9 +4,7 @@ Rails.application.routes.draw do
       resources :users, only: [:index, :show, :create, :update, :destroy] do
         resources :signups, only: [:index] # For display in "Your games" tab
       end
-      resources :games, only: [:index, :show, :create, :update, :destroy] do
-        resources :signups, only: [:index]
-      end
+      resources :games, only: [:index, :show, :create, :update, :destroy]
       resources :timeslots, only: [:index, :show, :create, :update, :destroy]
       resources :signups, only: [:show, :create, :update, :destroy]
       resources :game_statuses, only: [:index]

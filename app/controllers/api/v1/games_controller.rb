@@ -4,7 +4,17 @@ class Api::V1::GamesController < Api::V1::BaseController
   before_action :set_game, only: [:show, :update, :destroy]
 
   def index
-    @games = Game.all
+    # if params[:user_id].nil?
+    #   @games = Game.all.order(date: :desc, start_time: :desc)
+    # else
+    #   @user = User.find(params[:user_id])
+    #   @games = []
+    #   @user.signups.each do |signup|
+    #     @games << signup.game
+    #   end
+    #   # @games
+    # end
+    @games = Game.all.order(date: :desc, start_time: :desc)
   end
 
   def show
