@@ -4,20 +4,32 @@ class Api::V1::GamesController < Api::V1::BaseController
   before_action :set_game, only: [:show, :update, :destroy]
 
   def index
-    # if params[:user_id].nil?
-    #   @games = Game.all.order(date: :desc, start_time: :desc)
-    # else
-    #   @user = User.find(params[:user_id])
-    #   @games = []
-    #   @user.signups.each do |signup|
-    #     @games << signup.game
-    #   end
-    #   # @games
-    # end
     @games = Game.all.order(date: :desc, start_time: :desc)
   end
 
   def show
+    @signed_up_count = 0
+    @waitlist_count = 0
+    @cancelled_count = 0
+    @late_cancelled_count = 0
+    @no_show_count = 0
+    @removed_count = 0
+
+    @game.signups.each do |s|
+      if s.attendee_status.name == "Signed-up"
+        @signed_up_count += 1
+      elsif s.attendee_status.name == "Waitlisted"
+        @waitlist_count += 1
+      elsif s.attendee_status.name == "Cancelled"
+        @cancelled_count += 1
+      elsif s.attendee_status.name == "Late-cancelled"
+        @late_cancelled_count += 1
+      elsif s.attendee_status.name == "No-show"
+        @no_show_count += 1
+      else
+        @removed_count += 1
+      end
+    end
   end
 
   def create

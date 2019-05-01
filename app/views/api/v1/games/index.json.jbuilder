@@ -6,6 +6,9 @@ json.array! @games do |game|
   json.end_time game.end_time.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
   json.signup_date game.signup_time.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
 
+  json.signup_time game.signup_time.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
+  json.signup_opens false
+
   json.startTime game.start_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.endTime game.end_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.signUpDate game.signup_time.in_time_zone("Beijing").strftime("%Y-%m-%d")

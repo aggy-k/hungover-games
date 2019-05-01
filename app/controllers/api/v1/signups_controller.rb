@@ -1,12 +1,16 @@
 class Api::V1::SignupsController < Api::V1::BaseController
   skip_before_action :verify_authenticity_token
-  before_action :set_user
-  before_action :set_game, only: [:create, :update]
+  before_action :set_user, only: [:create]
+  before_action :set_game, only: [:create]
   before_action :set_attendee_status, only: [:create, :update]
 
   def index
     user_id = params[:user_id]
     @signups = Signup.joins("INNER JOIN games ON games.id = signups.game_id").where("signups.user_id = ?", user_id).order("games.start_time DESC")
+  end
+
+  def show
+    @signup = Signup.find(params[:id])
   end
 
   def create
