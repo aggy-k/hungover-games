@@ -4,7 +4,9 @@ class Api::V1::GamesController < Api::V1::BaseController
   before_action :set_game, only: [:show, :update, :destroy]
 
   def index
-    @games = Game.all.order(date: :desc, start_time: :desc)
+    now = Time.now.utc
+    @games = Game.all.where("end_time >= ?", now).order(date: :desc, start_time: :desc)
+    @past_games = Game.all.where("end_time < ?", now).order(date: :desc, start_time: :desc)
   end
 
   def show
