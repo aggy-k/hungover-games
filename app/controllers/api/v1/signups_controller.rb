@@ -19,13 +19,21 @@ class Api::V1::SignupsController < Api::V1::BaseController
     @signup = Signup.new()
     @signup.user = @user
     @signup.game = @game
-    @signup.attendee_status = @attendee_status
+    # @signup.attendee_status = @attendee_status
+    # Add logic to count whether status is 1 or 2
+    if @game.attendees_count >= @game.max_capacity
+      attendee_status = AttendeeStatus.find_by(name: 'Waitlisted')
+      @signup.attendee_status = attendee_status
+    else
+      attendee_status = AttendeeStatus.find_by(name: 'Signed-up')
+      @signup.attendee_status = attendee_status
+    end
 
     if @signup.save
       @game.update(total_headcount: @game.signups.count)
-      if params[:attendee_status] == "Signed-up"
+      if attendee_status.name == "Signed-up"
         @game.update(attendees_count: @game.attendees_count + 1)
-      elsif params[:attendee_status] == "Waitlisted"
+      elsif attendee_status.name == "Waitlisted"
         @game.update(waitlist_count: @game.waitlist_count + 1)
       end
     else
