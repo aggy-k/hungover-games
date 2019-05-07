@@ -60,13 +60,17 @@ class Api::V1::GamesController < Api::V1::BaseController
     @is_active = params[:is_active] == "true" || params[:is_active] == true
     @game.game_status = GameStatus.find_by(is_active: @is_active)
 
+    @game.description = params[:description]
+    @game.announcement = params[:announcement]
+    @game.location = params[:location]
+    @game.max_capacity = params[:max_capacity]
     @game.start_time = Time.parse(params[:start_time])
     @game.end_time = Time.parse(params[:end_time])
     @game.date = Date.parse(params[:date])
     @game.signup_time = Time.parse(params[:signup_time])
 
 
-    if @game.update(game_params)
+    if @game.save
       render :show
     else
       render_error
