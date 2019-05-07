@@ -5,7 +5,7 @@ class Api::V1::GamesController < Api::V1::BaseController
 
   def index
     now = Time.now.utc
-    @games = Game.all.where("end_time >= ?", now).order(date: :desc, start_time: :desc)
+    @games = Game.all.where("end_time >= ?", now).order(date: :asc, start_time: :asc)
     @past_games = Game.all.where("end_time < ?", now).order(date: :desc, start_time: :desc)
   end
 

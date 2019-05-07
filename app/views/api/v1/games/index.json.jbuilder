@@ -17,6 +17,7 @@ json.games @games do |game|
 
   json.signups game.signups do |signup|
     json.attendee signup.user.username
+    json.profile_image signup.user.profile_image
     json.signup_status signup.attendee_status.name
   end
 end
@@ -40,6 +41,7 @@ json.pastGames @past_games do |game|
 
   json.signups game.signups do |signup|
     json.attendee signup.user.username
+    json.profile_image signup.user.profile_image
     json.signup_status signup.attendee_status.name
   end
 end
