@@ -21,7 +21,7 @@ class Api::V1::SignupsController < Api::V1::BaseController
     @signup.game = @game
     # @signup.attendee_status = @attendee_status
     # Add logic to count whether status is 1 or 2
-    if @game.attendees_count >= @game.max_capacity
+    if (@game.attendees_count >= @game.max_capacity) || (@game.waitlist_count > 0)
       attendee_status = AttendeeStatus.find_by(name: 'Waitlisted')
       @signup.attendee_status = attendee_status
     else

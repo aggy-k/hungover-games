@@ -21,6 +21,7 @@ json.gameStatus @game.game_status.is_active
 
 json.attendees @game.signups do |signup|
   json.id signup.id
+  json.userId signup.user.id
   json.username signup.user.username
   json.profileImage signup.user.profile_image
   json.attendeeStatus signup.attendee_status.name
