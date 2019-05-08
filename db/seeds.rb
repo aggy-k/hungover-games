@@ -39,7 +39,7 @@ end
 
 if AttendeeStatus.count == 0
   puts "Creating Attendee Statuses.."
-  attendee_statuses = ["signed-up", "waitlisted", "cancelled", "late-cancelled", "no-show", "removed"]
+  attendee_statuses = ["Signed-up", "Waitlisted", "Cancelled", "Late-cancelled", "No-show", "Removed"]
 
   attendee_statuses.each do |status|
     AttendeeStatus.create!(name: status)
