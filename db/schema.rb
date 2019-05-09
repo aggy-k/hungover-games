@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_074028) do
+ActiveRecord::Schema.define(version: 2019_05_09_024527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 2019_05_06_074028) do
     t.text "description"
     t.text "announcement"
     t.bigint "game_status_id"
-    t.string "location"
     t.integer "max_capacity", default: 28
     t.integer "attendees_count", default: 0
     t.bigint "user_id"
@@ -46,8 +45,19 @@ ActiveRecord::Schema.define(version: 2019_05_06_074028) do
     t.datetime "end_time"
     t.integer "total_headcount", default: 0
     t.integer "waitlist_count", default: 0
+    t.bigint "location_id"
     t.index ["game_status_id"], name: "index_games_on_game_status_id"
+    t.index ["location_id"], name: "index_games_on_location_id"
     t.index ["user_id"], name: "index_games_on_user_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.string "address"
+    t.float "long"
+    t.float "lat"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "signups", force: :cascade do |t|
@@ -82,6 +92,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_074028) do
   end
 
   add_foreign_key "games", "game_statuses"
+  add_foreign_key "games", "locations"
   add_foreign_key "games", "users"
   add_foreign_key "signups", "attendee_statuses"
   add_foreign_key "signups", "games"
