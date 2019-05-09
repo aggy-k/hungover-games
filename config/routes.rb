@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :game_statuses, only: [:index]
 
       post '/login', to: 'login#login'
+      get '/access', to: 'access#access'
     end
   end
 end

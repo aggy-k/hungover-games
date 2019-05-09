@@ -1,8 +1,16 @@
-Location.create!(
-  name: 'Cages',
-  address: "3F, Jing'An Sports Center, Jiangning road 428 江宁路428号静安体育中心3层",
-  long: 121.452879,
-  lat: 31.235168)
+appid = ENV["APP_ID"]
+secret = ENV["APP_SECRET"]
+
+URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=#{appid}&secret=#{secret}"
+
+@wechat_response ||= RestClient.get(URL)
+p JSON.parse(@wechat_response.body)
+
+# Location.create!(
+#   name: 'Cages',
+#   address: "3F, Jing'An Sports Center, Jiangning road 428 江宁路428号静安体育中心3层",
+#   long: 121.452879,
+#   lat: 31.235168)
 
 # if User.count == 0
 #   User.create!(first_name: "Admin", last_name: "One", admin: true)
