@@ -47,6 +47,7 @@ class Api::V1::GamesController < Api::V1::BaseController
     @game.end_time = Time.parse(params[:end_time])
     @game.date = Date.parse(params[:date])
     @game.signup_time = Time.parse(params[:signup_time])
+    @game.location = Location.find_by(name: 'Cages')
 
     if @game.save
       render :show
@@ -62,13 +63,12 @@ class Api::V1::GamesController < Api::V1::BaseController
 
     @game.description = params[:description]
     @game.announcement = params[:announcement]
-    @game.location = params[:location]
+    # @game.location = params[:location]
     @game.max_capacity = params[:max_capacity]
     @game.start_time = Time.parse(params[:start_time])
     @game.end_time = Time.parse(params[:end_time])
     @game.date = Date.parse(params[:date])
     @game.signup_time = Time.parse(params[:signup_time])
-
 
     if @game.save
       render :show
@@ -92,7 +92,7 @@ class Api::V1::GamesController < Api::V1::BaseController
   end
 
   def game_params
-    params.require(:game).permit(:date, :signup_time, :description, :announcement, :location, :max_capacity, :user_id, :is_active, :end_time, :start_time)
+    params.require(:game).permit(:date, :signup_time, :description, :announcement, :max_capacity, :user_id, :is_active, :end_time, :start_time)
   end
 
   def render_error
