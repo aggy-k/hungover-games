@@ -25,6 +25,7 @@ json.attendees @game.signups do |signup|
   json.username signup.user.username
   json.profileImage signup.user.profile_image
   json.attendeeStatus signup.attendee_status.name
+  json.created_at signup.created_at.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
   json.updated_at signup.updated_at.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
 end
 

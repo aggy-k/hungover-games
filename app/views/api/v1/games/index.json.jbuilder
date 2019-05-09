@@ -16,9 +16,13 @@ json.games @games do |game|
   json.game_status game.game_status
 
   json.signups game.signups do |signup|
+    json.id signup.id
+    json.user_id signup.user.id
     json.attendee signup.user.username
     json.profile_image signup.user.profile_image
     json.signup_status signup.attendee_status.name
+    json.created_at signup.created_at
+    json.updated_at signup.updated_at
   end
 end
 
@@ -40,8 +44,12 @@ json.pastGames @past_games do |game|
   json.game_status game.game_status
 
   json.signups game.signups do |signup|
+    json.id signup.id
+    json.user_id signup.user.id
     json.attendee signup.user.username
     json.profile_image signup.user.profile_image
     json.signup_status signup.attendee_status.name
+    json.created_at signup.created_at
+    json.updated_at signup.updated_at
   end
 end
