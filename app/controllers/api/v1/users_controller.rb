@@ -3,7 +3,9 @@ class Api::V1::UsersController < Api::V1::BaseController
   before_action :set_user, only: [:show, :update]
 
   def show
-
+    @signup_count = @user.signups.select { |s| s.attendee_status_id == 1 }.map{ |s| s.game_id }.uniq.count
+    @games = Game.where(game_status: GameStatus.find_by(is_active: true))
+    @game_count = @games.count
   end
 
   def update
