@@ -9,6 +9,8 @@ Rails.application.routes.draw do
       resources :signups, only: [:show, :create, :update, :destroy]
       resources :game_statuses, only: [:index]
 
+      resources :game_rules, only: [:index, :create]
+
       post '/login', to: 'login#login'
       get '/access', to: 'access#access'
     end
