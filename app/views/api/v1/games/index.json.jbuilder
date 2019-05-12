@@ -15,6 +15,12 @@ json.games @games do |game|
   json.signUpTime game.signup_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.game_status game.game_status
 
+  # USER SIGNUP STATUS COUNT
+  json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
+  json.userWaitlisted game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
+  json.userCancelled game.signups.count { |signup| signup.attendee_status.name == "Cancelled" }
+
+  # SIGNUP OBJECTS
   json.signups game.signups do |signup|
     json.id signup.id
     json.user_id signup.user.id
@@ -43,6 +49,12 @@ json.pastGames @past_games do |game|
   json.signUpTime game.signup_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.game_status game.game_status
 
+  # USER SIGNUP STATUS COUNT
+  json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
+  json.userWaitlisted game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
+  json.userCancelled game.signups.count { |signup| signup.attendee_status.name == "Cancelled" }
+
+  # SIGNUP OBJECTS
   json.signups game.signups do |signup|
     json.id signup.id
     json.user_id signup.user.id

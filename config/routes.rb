@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       resources :games, only: [:index, :show, :create, :update, :destroy]
       resources :timeslots, only: [:index, :show, :create, :update, :destroy]
       resources :signups, only: [:show, :create, :update, :destroy]
+      put '/signupcancel', to: 'signups#cancel_signup'
       resources :game_statuses, only: [:index]
 
       resources :game_rules, only: [:index, :create]
