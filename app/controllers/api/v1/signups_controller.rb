@@ -1,6 +1,6 @@
 class Api::V1::SignupsController < Api::V1::BaseController
   skip_before_action :verify_authenticity_token
-  before_action :set_user, only: [:create]
+  before_action :set_user, only: [:create, :cancel_signup]
   before_action :set_game, only: [:create, :update]
   before_action :set_attendee_status, only: [:create, :update]
 
@@ -57,6 +57,22 @@ class Api::V1::SignupsController < Api::V1::BaseController
         @game.update(attendees_count: @game.attendees_count + 1)
       elsif params[:attendee_status] == "Waitlisted"
         @game.update(waitlist_count: @game.waitlist_count + 1)
+      end
+    else
+      render_error
+    end
+  end
+
+  def cancel_signup
+    game = Game.find(params[:game_id])
+    user = current_user
+    attendee_status = AttendeeStatus.find_by(name: params[:attendee_status])
+    signup = game.signups.where(user: user, attendee_status: attendee_status).last
+    if signup.update(attendee_status: AttendeeStatus.find_by(name: 'Cancelled'))
+      if attendee_status.name == 'Signed-up'
+        game.update(attendees_count: game.attendees_count - 1)
+      elsif attendee_status.name == 'Waitlisted'
+        game.update(waitlist_count: game.waitlist_count - 1)
       end
     else
       render_error
