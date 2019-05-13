@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
       post '/login', to: 'login#login'
       get '/access', to: 'access#access'
+
     end
   end
+
+  get "/pages/:page" => "pages#home"
 end

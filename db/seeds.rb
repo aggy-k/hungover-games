@@ -1,10 +1,3 @@
-appid = ENV["APP_ID"]
-secret = ENV["APP_SECRET"]
-
-URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=#{appid}&secret=#{secret}"
-
-@wechat_response ||= RestClient.get(URL)
-p JSON.parse(@wechat_response.body)
 
 # Location.create!(
 #   name: 'Cages',
@@ -55,10 +48,10 @@ p JSON.parse(@wechat_response.body)
 #   puts "Creating Attendee Statuses.."
 #   attendee_statuses = ["Signed-up", "Waitlisted", "Cancelled", "Late-cancelled", "No-show", "Removed"]
 
-#   attendee_statuses.each do |status|
-#     AttendeeStatus.create!(name: status)
-#     puts "Created status: #{status}"
-#   end
+  # attendee_statuses.each do |status|
+  #   AttendeeStatus.create!(name: status)
+  #   puts "Created status: #{status}"
+  # end
 
 #   puts "Created #{AttendeeStatus.count} attendee statuses."
 # end
