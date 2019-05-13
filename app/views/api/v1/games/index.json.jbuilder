@@ -16,9 +16,9 @@ json.games @games do |game|
   json.game_status game.game_status
 
   # USER SIGNUP STATUS COUNT
-  json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
-  json.userWaitlisted game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
-  json.userCancelled game.signups.count { |signup| signup.attendee_status.name == "Cancelled" }
+  json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" && signup.user.id == @user_id.to_i }
+  json.userWaitlisted game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" && signup.user.id == @user_id.to_i }
+  json.userCancelled game.signups.count { |signup| signup.attendee_status.name == "Cancelled" && signup.user.id == @user_id.to_i }
 
   # SIGNUP OBJECTS
   json.signups game.signups do |signup|
@@ -50,9 +50,9 @@ json.pastGames @past_games do |game|
   json.game_status game.game_status
 
   # USER SIGNUP STATUS COUNT
-  json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
-  json.userWaitlisted game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
-  json.userCancelled game.signups.count { |signup| signup.attendee_status.name == "Cancelled" }
+  json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" && signup.user.id == @user_id.to_i }
+  json.userWaitlisted game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" && signup.user.id == @user_id.to_i }
+  json.userCancelled game.signups.count { |signup| signup.attendee_status.name == "Cancelled" && signup.user.id == @user_id.to_i }
 
   # SIGNUP OBJECTS
   json.signups game.signups do |signup|

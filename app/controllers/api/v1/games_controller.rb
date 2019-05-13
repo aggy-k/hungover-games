@@ -9,9 +9,9 @@ class Api::V1::GamesController < Api::V1::BaseController
       @games = Game.all.where("end_time >= ?", now).order(date: :asc, start_time: :asc)
       @past_games = Game.all.where("end_time < ?", now).order(date: :desc, start_time: :desc)
     else
-      user_id = params[:user_id]
-      @games = Game.all.joins("INNER JOIN signups ON games.id = signups.game_id").where("signups.user_id = ? AND games.end_time >= ?", user_id, now).group("games.id").order("games.end_time ASC")
-      @past_games = Game.all.joins("INNER JOIN signups ON games.id = signups.game_id").where("signups.user_id = ? AND games.end_time < ?", user_id, now).group("games.id").order("games.end_time ASC")
+      @user_id = params[:user_id]
+      @games = Game.all.joins("INNER JOIN signups ON games.id = signups.game_id").where("signups.user_id = ? AND games.end_time >= ?", @user_id, now).group("games.id").order("games.end_time ASC")
+      @past_games = Game.all.joins("INNER JOIN signups ON games.id = signups.game_id").where("signups.user_id = ? AND games.end_time < ?", @user_id, now).group("games.id").order("games.end_time ASC")
     end
   end
 
