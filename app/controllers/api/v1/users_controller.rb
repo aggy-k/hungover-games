@@ -3,9 +3,14 @@ class Api::V1::UsersController < Api::V1::BaseController
   before_action :set_user, only: [:show, :update]
 
   def show
-    @signup_count = @user.signups.select { |s| s.attendee_status_id == 1 }.map{ |s| s.game_id }.uniq.count
+    now = Time.now
+    games_played = @user.signups.select { |s| s.attendee_status_id == AttendeeStatus.find_by(name: 'Signed-up').id }.map{ |s| s.game_id }.uniq
+    @signup_count = games_played.select { |g| Game.find(g).end_time < now }.count
     @games = Game.where(game_status: GameStatus.find_by(is_active: true))
     @game_count = @games.count
+
+    first_game = games_played.sort_by { |g| Game.find(g).start_time }.first
+    @first_date = Game.find(first_game).start_time
   end
 
   def update
@@ -21,7 +26,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def user_params
-    params.require(:user).permit(:profile_image, :username, :first_name, :last_name)
+    params.require(:user).permit(:profile_image, :username, :first_name, :last_name, :quote)
   end
 
   def render_error
