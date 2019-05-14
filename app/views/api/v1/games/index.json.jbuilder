@@ -1,5 +1,5 @@
 json.games @games do |game|
-  json.extract! game, :id, :max_capacity, :attendees_count, :waitlist_count, :total_headcount, :location, :description, :announcement
+  json.extract! game, :id, :max_capacity, :location, :description, :announcement
   json.date game.date
 
   json.start_time game.start_time.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
@@ -14,6 +14,11 @@ json.games @games do |game|
   json.signUpDate game.signup_time.in_time_zone("Beijing").strftime("%Y-%m-%d")
   json.signUpTime game.signup_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.game_status game.game_status
+
+  # GENERIC SIGNUP STATUS COUNT
+  json.attendees_count game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
+  json.waitlist_count game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
+  json.total_headcount game.signups.count
 
   # USER SIGNUP STATUS COUNT
   json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" && signup.user.id == @user_id.to_i }
@@ -33,7 +38,7 @@ json.games @games do |game|
 end
 
 json.pastGames @past_games do |game|
-  json.extract! game, :id, :max_capacity, :attendees_count, :waitlist_count, :total_headcount, :location, :description, :announcement
+  json.extract! game, :id, :max_capacity, :location, :description, :announcement
   json.date game.date
 
   json.start_time game.start_time.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
@@ -48,6 +53,11 @@ json.pastGames @past_games do |game|
   json.signUpDate game.signup_time.in_time_zone("Beijing").strftime("%Y-%m-%d")
   json.signUpTime game.signup_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.game_status game.game_status
+
+  # GENERIC SIGNUP STATUS COUNT
+  json.attendees_count game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
+  json.waitlist_count game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
+  json.total_headcount game.signups.count
 
   # USER SIGNUP STATUS COUNT
   json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" && signup.user.id == @user_id.to_i }
