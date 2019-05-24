@@ -20,34 +20,33 @@ class Api::V1::SignupsController < Api::V1::BaseController
     @signup.user = @user
     @signup.game = @game
     count = @user.signups.where(game: @game).count
+    count_signed_up = @user.signups.where(game: @game, attendee_status: set_status('Signed-up')).count
+
     if count.zero?
       @signup.player = @user.username
     else
       @signup.player = "#{@user.username} +#{count}"
     end
-    # @signup.attendee_status = @attendee_status
+
+    # Add logic : only first 2 signups go straight to game for each user
+    # Add logic : if a spot becomes available because of cancellation, new signup still goes to waitlist
 
     # Add logic to count whether status is 1 or 2
     attendees_count = @game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
     waitlist_count = @game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
-    if (attendees_count >= @game.max_capacity) || (waitlist_count > 0)
-      attendee_status = AttendeeStatus.find_by(name: 'Waitlisted')
-      @signup.attendee_status = attendee_status
-    else
-      attendee_status = AttendeeStatus.find_by(name: 'Signed-up')
-      @signup.attendee_status = attendee_status
-    end
+    original_count = (@game.signups.count { |signup| (signup.previous_status == "Signed-up") && ((signup.attendee_status.name == "Cancelled") || (signup.attendee_status.name == "Late-cancelled")) }) + attendees_count
 
-    # if @signup.save
-    #   @game.update(total_headcount: @game.signups.count)
-    #   if attendee_status.name == "Signed-up"
-    #     @game.update(attendees_count: @game.attendees_count + 1)
-    #   elsif attendee_status.name == "Waitlisted"
-    #     @game.update(waitlist_count: @game.waitlist_count + 1)
-    #   end
-    # else
-    #   render_error
-    # end
+    # add logic for original signup count, where status is or was Signed-up
+    if (original_count >= @game.max_capacity)
+      # if there are spots and no waitlist
+      if (attendees_count < @game.max_capacity) && (waitlist_count.zero?)
+        @signup.attendee_status = max_two(count_signed_up)
+      else
+        @signup.attendee_status = set_status('Waitlisted')
+      end
+    else
+      @signup.attendee_status = max_two(count_signed_up)
+    end
 
     unless @signup.save
       render_error
@@ -57,22 +56,11 @@ class Api::V1::SignupsController < Api::V1::BaseController
   def update
     @signup = Signup.find(params[:id])
     last_status = @signup.attendee_status.name
+    @signup.previous_status = last_status
     @signup.attendee_status = @attendee_status unless params[:attendee_status].nil?
     @signup.player = params[:player] unless params[:player].nil?
+    @signup.is_paid = params[:is_paid] unless params[:is_paid].nil?
 
-    # if @signup.save
-    #   if (last_status == "Signed-up") && !(params[:attendee_status] == "Signed-up")
-    #     @game.update(attendees_count: @game.attendees_count - 1)
-    #   elsif (last_status == "Waitlisted") && !(params[:attendee_status] == "Waitlisted")
-    #     @game.update(waitlist_count: @game.waitlist_count - 1)
-    #   end
-
-    #   if params[:attendee_status] == "Signed-up"
-    #     @game.update(attendees_count: @game.attendees_count + 1)
-    #   elsif params[:attendee_status] == "Waitlisted"
-    #     @game.update(waitlist_count: @game.waitlist_count + 1)
-    #   end
-    # else
     unless @signup.save
       render_error
     end
@@ -81,23 +69,30 @@ class Api::V1::SignupsController < Api::V1::BaseController
   def cancel_signup
     game = Game.find(params[:game_id])
     user = current_user
-    attendee_status = AttendeeStatus.find_by(name: params[:attendee_status])
+    attendee_status = set_status(params[:attendee_status])
     signup = game.signups.where(user: user, attendee_status: attendee_status).last
-    # if signup.update(attendee_status: AttendeeStatus.find_by(name: 'Cancelled'))
-    #   if attendee_status.name == 'Signed-up'
-    #     game.update(attendees_count: game.attendees_count - 1)
-    #   elsif attendee_status.name == 'Waitlisted'
-    #     game.update(waitlist_count: game.waitlist_count - 1)
-    #   end
-    # else
-    #   render_error
-    # end
-    unless signup.update(attendee_status: AttendeeStatus.find_by(name: 'Cancelled'))
+
+    unless signup.update(
+      attendee_status: set_status('Cancelled'),
+      previous_status: params[:attendee_status]
+      )
       render_error
     end
   end
 
   private
+
+  def set_status(status)
+    AttendeeStatus.find_by(name: status)
+  end
+
+  def max_two(count_signed_up)
+    if count_signed_up < 2
+      set_status('Signed-up')
+    else
+      set_status('Waitlisted')
+    end
+  end
 
   def set_attendee_status
     @attendee_status = AttendeeStatus.find_by(name: params[:attendee_status]) unless params[:attendee_status].nil?
@@ -112,7 +107,7 @@ class Api::V1::SignupsController < Api::V1::BaseController
   end
 
   def signup_params
-    params.require(:signup).permit(:game_id, :user_id, :attendee_status, :player)
+    params.require(:signup).permit(:game_id, :user_id, :attendee_status, :player, :is_paid)
   end
 
   def render_error

@@ -1,9 +1,9 @@
 
-# Location.create!(
-#   name: 'Cages',
-#   address: "3F, Jing'An Sports Center, Jiangning road 428 江宁路428号静安体育中心3层",
-#   long: 121.452879,
-#   lat: 31.235168)
+Location.create!(
+  name: 'Cages',
+  address: "3F, Jing'An Sports Center, Jiangning road 428 江宁路428号静安体育中心3层",
+  long: 121.452879,
+  lat: 31.235168)
 
 # if User.count == 0
 #   User.create!(first_name: "Admin", last_name: "One", admin: true)
@@ -11,12 +11,12 @@
 # end
 
 
-# if GameStatus.count == 0
-#   puts "Creating Game Statuses.."
-#   GameStatus.create!(is_active: true, name: "Active")
-#   GameStatus.create!(is_active: false, name: "Cancelled")
-#   puts "Created #{GameStatus.count} game statuses."
-# end
+if GameStatus.count == 0
+  puts "Creating Game Statuses.."
+  GameStatus.create!(is_active: true, name: "Active")
+  GameStatus.create!(is_active: false, name: "Cancelled")
+  puts "Created #{GameStatus.count} game statuses."
+end
 
 # if Timeslot.count == 0
 #   puts "Creating Timeslots.."
@@ -44,17 +44,17 @@
 #   puts "Created #{Timeslot.count} timeslots."
 # end
 
-# if AttendeeStatus.count == 0
-#   puts "Creating Attendee Statuses.."
-#   attendee_statuses = ["Signed-up", "Waitlisted", "Cancelled", "Late-cancelled", "No-show", "Removed"]
+if AttendeeStatus.count == 0
+  puts "Creating Attendee Statuses.."
+  attendee_statuses = ["Signed-up", "Waitlisted", "Cancelled", "Late-cancelled", "No-show", "Removed"]
 
-  # attendee_statuses.each do |status|
-  #   AttendeeStatus.create!(name: status)
-  #   puts "Created status: #{status}"
-  # end
+  attendee_statuses.each do |status|
+    AttendeeStatus.create!(name: status)
+    puts "Created status: #{status}"
+  end
 
-#   puts "Created #{AttendeeStatus.count} attendee statuses."
-# end
+  puts "Created #{AttendeeStatus.count} attendee statuses."
+end
 
 # puts "Destroying existing signups and games..."
 # Signup.destroy_all if Rails.env.development?
