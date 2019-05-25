@@ -6,7 +6,7 @@ class Api::V1::GamesController < Api::V1::BaseController
   def index
     now = Time.now.utc
     if params[:user_id].nil?
-      @games = Game.all.where("end_time >= ?", now).order(date: :asc, start_time: :asc)
+      @games = Game.all.where("end_time >= ?", now).order(date: :desc, start_time: :desc)
       @past_games = Game.all.where("end_time < ?", now).order(date: :desc, start_time: :desc)
     else
       @user_id = params[:user_id]
