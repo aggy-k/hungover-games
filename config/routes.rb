@@ -19,4 +19,5 @@ Rails.application.routes.draw do
   end
 
   get "/pages/:page" => "pages#home"
+  root to: "pages#index"
 end
