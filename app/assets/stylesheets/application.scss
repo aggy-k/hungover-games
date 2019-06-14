@@ -4,10 +4,26 @@
 @import "config/bootstrap_variables";
 
 // External libraries
-/*@import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/bootstrap";
 @import "font-awesome-sprockets";
-@import "font-awesome";*/
+@import "font-awesome";
 
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700|Raleway:400,700&display=swap');
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+
+body {
+  background-color: rgb(20,20,20);
+  color: #fff;
+}
+
+h2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 48px;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20rpx;
+}
