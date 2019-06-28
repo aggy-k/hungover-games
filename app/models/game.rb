@@ -8,4 +8,17 @@ class Game < ApplicationRecord
 
   validates :date, :signup_time, :start_time, :end_time, :max_capacity, presence: true
   validates :max_capacity, :attendees_count, numericality: { only_integer: true }
+
+  def signup_opens
+    t = Time.now
+    st = self.signup_time
+
+    return t > st
+  end
+
+  def now
+    return Time.now
+  end
 end
+
+

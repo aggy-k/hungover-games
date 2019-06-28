@@ -7,7 +7,10 @@ json.games @games do |game|
   json.signup_date game.signup_time.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
 
   json.signup_time game.signup_time.in_time_zone("Beijing").strftime("%A, %d %b %Y %l:%M %p")
-  json.signup_opens false
+  # json.signup_opens
+  json.signup_opens game.signup_opens
+  json.signup_time_raw game.signup_time
+  json.now game.now
 
   json.startTime game.start_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.endTime game.end_time.in_time_zone("Beijing").strftime("%l:%M %p")
