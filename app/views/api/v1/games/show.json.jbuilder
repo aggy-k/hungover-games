@@ -19,7 +19,7 @@ json.signUpDate @game.signup_time.in_time_zone("Beijing").strftime("%Y-%m-%d")
 json.signUpTime @game.signup_time.in_time_zone("Beijing").strftime("%H:%M")
 json.gameStatus @game.game_status.is_active
 
-json.attendees @game.signups do |signup|
+json.attendees @game.signups.order("signups.id ASC") do |signup|
   json.id signup.id
   json.userId signup.user.id
   json.username signup.user.username
