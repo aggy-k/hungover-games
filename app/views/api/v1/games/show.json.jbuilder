@@ -18,6 +18,7 @@ json.endTime @game.end_time.in_time_zone("Beijing").strftime("%H:%M")
 json.signUpDate @game.signup_time.in_time_zone("Beijing").strftime("%Y-%m-%d")
 json.signUpTime @game.signup_time.in_time_zone("Beijing").strftime("%H:%M")
 json.gameStatus @game.game_status.is_active
+json.isPrivate @game.is_private
 
 json.attendees @game.signups.order("signups.id ASC") do |signup|
   json.id signup.id

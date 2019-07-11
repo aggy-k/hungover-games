@@ -7,7 +7,9 @@ class Game < ApplicationRecord
   has_many :users, through: :signups
 
   validates :date, :signup_time, :start_time, :end_time, :max_capacity, presence: true
-  validates :max_capacity, :attendees_count, numericality: { only_integer: true }
+  validates :max_capacity, numericality: { only_integer: true }
+
+  # scope :is_private, -> (is_private) {where(is_private: (is_private == "true")) }
 
   def total_headcount
     return self.signups.count

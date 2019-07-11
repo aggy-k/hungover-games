@@ -17,6 +17,7 @@ json.games @games do |game|
   json.signUpDate game.signup_time.in_time_zone("Beijing").strftime("%Y-%m-%d")
   json.signUpTime game.signup_time.in_time_zone("Beijing").strftime("%l:%M %p")
   json.game_status game.game_status
+  json.isPrivate game.is_private
 
   # GENERIC SIGNUP STATUS COUNT
   json.attendees_count game.signed_up_count

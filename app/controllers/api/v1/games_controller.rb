@@ -6,8 +6,13 @@ class Api::V1::GamesController < Api::V1::BaseController
   def index
     now = Time.now.utc
     if params[:user_id].nil?
-      @games = Game.all.where("end_time >= ?", now).order(date: :desc, start_time: :desc)
-      @past_games = Game.all.where("end_time < ?", now).order(date: :desc, start_time: :desc)
+      if params[:is_private].nil?
+        @games = Game.all.where("end_time >= ?", now).order(date: :desc, start_time: :desc)
+        @past_games = Game.all.where("end_time < ?", now).order(date: :desc, start_time: :desc)
+      else
+        @games = Game.all.where("is_private = ? AND end_time >= ?", false, now).order(date: :desc, start_time: :desc)
+        @past_games = Game.all.where("is_private = ? AND end_time < ?", false, now).order(date: :desc, start_time: :desc)
+      end
     else
       @user_id = params[:user_id]
       @games = Game.all.joins("INNER JOIN signups ON games.id = signups.game_id").where("signups.user_id = ? AND games.end_time >= ?", @user_id, now).group("games.id").order("games.end_time ASC")
@@ -26,9 +31,10 @@ class Api::V1::GamesController < Api::V1::BaseController
     @game = Game.new(game_params)
     @game.user = User.find(params[:user_id])
 
-    # convert is_active to BOOLEAN
+    # convert STRING to BOOLEAN
     @is_active = params[:is_active] == "true" || params[:is_active] == true
     @game.game_status = GameStatus.find_by(is_active: @is_active)
+    @game.is_private = params[:is_private] == "true" || params[:is_private] == true
 
     # convert all time related fields to date or datetime datatype
     @game.start_time = Time.parse(params[:start_time])
@@ -48,6 +54,8 @@ class Api::V1::GamesController < Api::V1::BaseController
     # convert is_active to BOOLEAN
     @is_active = params[:is_active] == "true" || params[:is_active] == true
     @game.game_status = GameStatus.find_by(is_active: @is_active)
+
+    @game.is_private = params[:is_private] == "true" || params[:is_private] == true
 
     @game.description = params[:description]
     @game.announcement = params[:announcement]
@@ -80,7 +88,7 @@ class Api::V1::GamesController < Api::V1::BaseController
   end
 
   def game_params
-    params.require(:game).permit(:date, :signup_time, :description, :announcement, :max_capacity, :user_id, :is_active, :end_time, :start_time)
+    params.require(:game).permit(:date, :signup_time, :description, :announcement, :max_capacity, :user_id, :is_active, :end_time, :start_time, :is_private)
   end
 
   def render_error
