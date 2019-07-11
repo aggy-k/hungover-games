@@ -34,7 +34,7 @@ class Api::V1::GamesController < Api::V1::BaseController
     # convert STRING to BOOLEAN
     @is_active = params[:is_active] == "true" || params[:is_active] == true
     @game.game_status = GameStatus.find_by(is_active: @is_active)
-    @game.is_private = params[:is_private] == "true" || params[:is_private] == true
+    # @game.is_private = params[:is_private] == "true" # || params[:is_private] == true
 
     # convert all time related fields to date or datetime datatype
     @game.start_time = Time.parse(params[:start_time])
@@ -55,7 +55,7 @@ class Api::V1::GamesController < Api::V1::BaseController
     @is_active = params[:is_active] == "true" || params[:is_active] == true
     @game.game_status = GameStatus.find_by(is_active: @is_active)
 
-    @game.is_private = params[:is_private] == "true" || params[:is_private] == true
+    # @game.is_private = params[:is_private] == "true" # || params[:is_private] == true
 
     @game.description = params[:description]
     @game.announcement = params[:announcement]
