@@ -1,7 +1,7 @@
 class Api::V1::GamesController < Api::V1::BaseController
   skip_before_action :verify_authenticity_token
-  before_action :set_user, only: [:update, :destroy]
-  before_action :set_game, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:update, :destroy, :show_user_signups]
+  before_action :set_game, only: [:show, :update, :destroy, :show_user_signups]
 
   def index
     now = Time.now.utc
@@ -16,28 +16,10 @@ class Api::V1::GamesController < Api::V1::BaseController
   end
 
   def show
-    @signed_up_count = 0
-    @waitlist_count = 0
-    @cancelled_count = 0
-    @late_cancelled_count = 0
-    @no_show_count = 0
-    @removed_count = 0
+  end
 
-    @game.signups.each do |s|
-      if s.attendee_status.name == "Signed-up"
-        @signed_up_count += 1
-      elsif s.attendee_status.name == "Waitlisted"
-        @waitlist_count += 1
-      elsif s.attendee_status.name == "Cancelled"
-        @cancelled_count += 1
-      elsif s.attendee_status.name == "Late-cancelled"
-        @late_cancelled_count += 1
-      elsif s.attendee_status.name == "No-show"
-        @no_show_count += 1
-      else
-        @removed_count += 1
-      end
-    end
+  def show_user_signups
+    @attendees = @game.signups.order("signups.id ASC").select {|s| s.user == @user}
   end
 
   def create

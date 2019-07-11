@@ -9,6 +9,34 @@ class Game < ApplicationRecord
   validates :date, :signup_time, :start_time, :end_time, :max_capacity, presence: true
   validates :max_capacity, :attendees_count, numericality: { only_integer: true }
 
+  def total_headcount
+    return self.signups.count
+  end
+
+  def signed_up_count
+    return self.signups.count {|signup| signup.attendee_status.name == "Signed-up"}
+  end
+
+  def waitlist_count
+    return self.signups.count {|signup| signup.attendee_status.name == "Waitlisted"}
+  end
+
+  def cancelled_count
+    return self.signups.count {|signup| signup.attendee_status.name == "Cancelled"}
+  end
+
+  def late_cancelled_count
+    return self.signups.count {|signup| signup.attendee_status.name == "Late-cancelled"}
+  end
+
+  def no_show_count
+    return self.signups.count {|signup| signup.attendee_status.name == "No-show"}
+  end
+
+  def removed_count
+    return self.signups.count {|signup| signup.attendee_status.name == "Removed"}
+  end
+
   def signup_opens
     t = Time.now
     st = self.signup_time

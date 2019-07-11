@@ -5,8 +5,12 @@ Rails.application.routes.draw do
         resources :signups, only: [:index] # For display in "Your games" tab
       end
       resources :games, only: [:index, :show, :create, :update, :destroy]
+
+      get 'games/:id/usersignups', to: 'games#show_user_signups'
+
       resources :timeslots, only: [:index, :show, :create, :update, :destroy]
       resources :signups, only: [:show, :create, :update, :destroy]
+
       put '/signupcancel', to: 'signups#cancel_signup'
       resources :game_statuses, only: [:index]
 

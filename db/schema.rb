@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_24_082758) do
+ActiveRecord::Schema.define(version: 2019_07_11_084437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,14 +46,11 @@ ActiveRecord::Schema.define(version: 2019_05_24_082758) do
     t.text "announcement"
     t.bigint "game_status_id"
     t.integer "max_capacity", default: 28
-    t.integer "attendees_count", default: 0
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer "total_headcount", default: 0
-    t.integer "waitlist_count", default: 0
     t.bigint "location_id"
     t.index ["game_status_id"], name: "index_games_on_game_status_id"
     t.index ["location_id"], name: "index_games_on_location_id"

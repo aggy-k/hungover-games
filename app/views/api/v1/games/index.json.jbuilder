@@ -19,9 +19,9 @@ json.games @games do |game|
   json.game_status game.game_status
 
   # GENERIC SIGNUP STATUS COUNT
-  json.attendees_count game.signups.count { |signup| signup.attendee_status.name == "Signed-up" }
-  json.waitlist_count game.signups.count { |signup| signup.attendee_status.name == "Waitlisted" }
-  json.total_headcount game.signups.count
+  json.attendees_count game.signed_up_count
+  json.waitlist_count game.waitlist_count
+  json.total_headcount game.total_headcount
 
   # USER SIGNUP STATUS COUNT
   json.userSignedUp game.signups.count { |signup| signup.attendee_status.name == "Signed-up" && signup.user.id == @user_id.to_i }
