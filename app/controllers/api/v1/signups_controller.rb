@@ -57,7 +57,13 @@ class Api::V1::SignupsController < Api::V1::BaseController
     @signup = Signup.find(params[:id])
     last_status = @signup.attendee_status.name
     @signup.previous_status = last_status
-    @signup.attendee_status = @attendee_status unless params[:attendee_status].nil?
+    # @signup.attendee_status = @attendee_status unless params[:attendee_status].nil?
+    if !params[:attendee_status].nil? && (params[:attendee_status] == 'Cancelled' || params[:attendee_status] == 'Late-cancelled')
+      cancel_status = @signup.late_cancelled? ? 'Late-cancelled' : 'Cancelled'
+      @signup.attendee_status = set_status(cancel_status)
+    elsif !params[:attendee_status].nil?
+      @signup.attendee_status = @attendee_status
+    end
     @signup.player = params[:player] unless params[:player].nil?
     @signup.is_paid = params[:is_paid] unless params[:is_paid].nil?
 
