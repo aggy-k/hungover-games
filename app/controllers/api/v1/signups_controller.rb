@@ -72,8 +72,10 @@ class Api::V1::SignupsController < Api::V1::BaseController
     attendee_status = set_status(params[:attendee_status])
     signup = game.signups.where(user: user, attendee_status: attendee_status).last
 
+    new_status = signup.late_cancelled? ? 'Late-cancelled' : 'Cancelled'
+
     unless signup.update(
-      attendee_status: set_status('Cancelled'),
+      attendee_status: set_status(new_status),
       previous_status: params[:attendee_status]
       )
       render_error
